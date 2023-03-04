@@ -11,7 +11,6 @@ function getFilms() {
 
 getFilms().then((data) => {
   renderCards(data);
-  console.log(data);
 });
 
 function renderCards(data) {
