@@ -13,15 +13,9 @@ const clients1 = [
 ];
 const clients2 = ["Пирс", "Зальцман", "Сальваторе", "Майклсон"];
 
-const result = clients1
-  .concat(clients2)
-  .filter((item, index, arr) => arr.indexOf(item) === index);
-console.log(result);
-// const clinetsBase = [];
-// clients1.concat(clients2).forEach((item) => (clinetsBase[item] = true));
-// const result = Object.keys(clinetsBase);
+const [...allClients] = new Set([...clients1, ...clients2]);
 
-//tast 2
+//task 2
 
 const characters = [
   {
@@ -86,7 +80,8 @@ const user1 = {
   years: 30,
 };
 
-const { name, years, isAdmin = false } = user1;
+const { name, years: age, isAdmin = false } = user1;
+console.log(name, age, isAdmin);
 
 //task 4
 
