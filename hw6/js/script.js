@@ -1,40 +1,26 @@
-const btn = document.createElement("btn");
-btn.textContent = "Знайти по IP";
-const root = document.querySelector("#root");
-root.append(btn);
-
-IP_URL = "https://api.ipify.org/?format=json";
-PHYSICAL_URL = "http://ip-api.com/json/";
-btn.addEventListener("click", (event) => {
-  event.preventDefault();
-  return clientIp();
-});
-
-async function clientIp() {
-  const data = await fetch(IP_URL)
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      return physicalIP();
-    })
-    .catch((e) => {
-      console.log(e);
-    });
+const ipButton = document.querySelector("button");
+const ul = document.createElement("ul");
+const urlIp = "https://api.ipify.org/?format=json";
+const urlInfo = "http://ip-api.com/";
+ipButton.addEventListener("click", getIPUser);
+async function castomGet(url, query = "") {
+  const response = await fetch(`${url}${query}`);
+  const data = await response.json();
+  return data;
 }
-
-async function physicalIP() {
-  const data = await fetch(PHYSICAL_URL)
-    .then((response) => {
-      return response.json();
-    })
-    .then(({ countryCode, country, region, city, regionName }) => {
-      const p = document.createElement("p");
-      p.textContent = `Сontinent - ${countryCode}, Country - ${country}, Region - ${region}, City - ${city}, 
-         Area - ${regionName}`;
-      btn.after(p);
-    })
-    .catch((e) => {
-      console.log(e);
-    });
+async function getIPUser() {
+  const dataIP = await castomGet(urlIp);
+  const dataInfo = await castomGet(
+    urlInfo,
+    `json/${dataIP.ip}?fields=country,regionName,city,district,continent`
+  );
+  for (let self in dataInfo) {
+    createList(self, dataInfo[self]);
+  }
+  document.body.append(ul);
+}
+async function createList(self, info) {
+  const li = document.createElement("li");
+  li.innerHTML = `${self}: ${info}`;
+  ul.append(li);
 }
